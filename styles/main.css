@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial;
+}
+
+body {
+  margin-bottom: 1000px;
+}
+
+.main-body {
+  background-color: #fff2d0;
+  text-align: center;
+}
+
+.headline {
+  color: #2c2c2c;
+  font-size: 42px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  padding-top: 12px;
+}
+
+.tagline {
+  color: #4a2c2a;
+  font-size: 18px;
+}
