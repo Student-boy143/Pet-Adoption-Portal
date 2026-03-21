@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: Roboto, Arial;
+  font-size: 18px;
+  color: #2e2b41;
+  text-align: center;
+}
+
+body {
+  min-height: auto;
+  background-image: url(/images/pexels-karola-g-4197560.jpg);
+  background-size: cover;
+  background-position: right;
+  overflow: hidden;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  background-color: #fff;
+  height: 100vh;
+  width: max(40%, 600px);
+  padding: 10px;
+  border-radius: 0 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+form {
+  width: min(400px, 100%);
+  margin-top: 20px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+form > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+form label {
+  flex-shrink: 0;
+  height: 50px;
+  width: 50px;
+  background-color: #8672ff;
+  fill: #2e2b41;
+  color: #2e2b41;
+  border-radius: 10px 0 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+form input {
+  box-sizing: border-box;
+  flex-grow: 1;
+  min-width: 0;
+  height: 50px;
+  padding: 1em;
+  font: inherit;
+  border-radius: 0 10px 10px 0;
+  border: 2px solid #f3f0ff;
+  border-left: none;
+  background-color: #f3f0ff;
+  transition: 150ms ease;
+}
+
+form input:hover {
+  border-color: #8672ff;
+}
+form input:focus {
+  outline: none;
+  border-color: #2e2b41;
+}
+
+div:has(input:focus) > label {
+  background-color: #2e2b41;
+}
+form input::placeholder {
+  color: #2e2b41;
+}
+form button {
+  margin-top: 10px;
+  border: none;
+  border-radius: 1000px;
+  padding: 0.85em 4em;
+  background-color: #8672ff;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 150ms ease;
+}
+form button:hover {
+  background-color: #2e2b41;
+}
+form button:focus {
+  outline: none;
+  background-color: #2e2b41;
+}
+a {
+  text-decoration: none;
+  color: #8672ff;
+}
+a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 1100px) {
+  .wrapper {
+    width: min(600px, 100%);
+    border-radius: 0;
+  }
+}
+form div.incorrect label {
+  background-color: #f06272;
+}
+form div.incorrect input {
+  border-color: #f06272;
+}
+#error-message {
+  color: #f06272;
+}
