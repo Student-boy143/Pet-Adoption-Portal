@@ -13,6 +13,10 @@ body {
   text-align: center;
 }
 
+.motto {
+  margin-bottom: 64px;
+}
+
 .headline {
   color: #2c2c2c;
   font-size: 42px;
@@ -23,5 +27,15 @@ body {
 
 .tagline {
   color: #4a2c2a;
-  font-size: 18px;
+  font-size: 22px;
+}
+
+.choose h1 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.choose li {
+  font-size: 22px;
+  line-height: 1.7;
 }
