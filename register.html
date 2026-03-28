@@ -1,65 +1,150 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Sign up</title>
-    <link rel="stylesheet" href="/styles/register.css" />
+    <title>Register — FurEver Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/auth.css" />
   </head>
-  <body>
-    <div class="wrapper">
-      <h1>Signup</h1>
-      <form>
-        <div class="incorrect">
-          <label for="firstname-input">
-            <img src="/images/icons/person.svg" />
-          </label>
-          <input
-            type="text"
-            name="firstname"
-            id="firstname-input"
-            placeholder="FirstName"
-          />
+  <body class="auth-page">
+    <div class="auth-split">
+      <div class="auth-panel">
+        <a href="index.html" class="auth-logo">
+          <div class="logo-circle">🐾</div>
+          <span>FurEver Home</span>
+        </a>
+
+        <div class="auth-form-wrap">
+          <h1>Create Account</h1>
+          <p class="auth-sub">
+            Join thousands of pet lovers finding their furever match.
+          </p>
+
+          <form class="auth-form" onsubmit="return false;">
+            <div class="field-row" id="firstname-row">
+              <label for="firstname-input">
+                <span class="field-icon">👤</span>
+              </label>
+              <input
+                type="text"
+                id="firstname-input"
+                name="firstname"
+                placeholder="First Name"
+                required
+              />
+            </div>
+
+            <div class="field-row">
+              <label for="lastname-input">
+                <span class="field-icon">👤</span>
+              </label>
+              <input
+                type="text"
+                id="lastname-input"
+                name="lastname"
+                placeholder="Last Name"
+              />
+            </div>
+
+            <div class="field-row">
+              <label for="email-input">
+                <span class="field-icon">@</span>
+              </label>
+              <input
+                type="email"
+                id="email-input"
+                name="email"
+                placeholder="Email address"
+                required
+              />
+            </div>
+
+            <div class="field-row">
+              <label for="password-input">
+                <span class="field-icon">🔒</span>
+              </label>
+              <input
+                type="password"
+                id="password-input"
+                name="password"
+                placeholder="Password"
+                required
+              />
+            </div>
+
+            <div class="field-row">
+              <label for="repeat-password-input">
+                <span class="field-icon">🔒</span>
+              </label>
+              <input
+                type="password"
+                id="repeat-password-input"
+                name="repeat-password"
+                placeholder="Confirm Password"
+                required
+              />
+            </div>
+
+            <div class="account-type">
+              <p class="account-type-label">I want to:</p>
+              <div class="account-type-options">
+                <label class="type-option selected">
+                  <input
+                    type="radio"
+                    name="account-type"
+                    value="adopt"
+                    checked
+                  />
+                  <span class="type-icon">🏠</span>
+                  <span>Adopt a Pet</span>
+                </label>
+                <label class="type-option">
+                  <input type="radio" name="account-type" value="rescue" />
+                  <span class="type-icon">🤝</span>
+                  <span>List / Rescue</span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg auth-submit">
+              Create Account →
+            </button>
+          </form>
+
+          <p class="auth-switch">
+            Already have an account? <a href="login.html">Sign in</a>
+          </p>
         </div>
+      </div>
 
-        <div>
-          <label for="email-input">
-            <span>@</span>
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email-input"
-            placeholder="Email"
-          />
+      <div class="auth-deco">
+        <div class="deco-content">
+          <div class="deco-emoji-grid">
+            <span>🐕</span><span>🐈</span> <span>🐇</span><span>🦜</span>
+            <span>🐩</span><span>🐾</span>
+          </div>
+          <h2>"Every pet has a story.<br />Be part of theirs."</h2>
+          <p>
+            1,240+ pets have found their forever homes through FurEver Home.
+          </p>
         </div>
-
-        <div>
-          <label for="password-input">
-            <img src="/images/icons/lock.svg" />
-          </label>
-          <input
-            type="password"
-            name="password"
-            id="password-input"
-            placeholder="Password"
-          />
-        </div>
-
-        <div>
-          <label for="password-input">
-            <img src="/images/icons/lock.svg" />
-          </label>
-          <input
-            type="password"
-            name="repeat-password"
-            id="repeat-password-input"
-            placeholder="Confirm Password"
-          />
-        </div>
-
-        <button type="submit">Signup</button>
-      </form>
-
-      <p>Already have an Account? <a href="login.html">Login</a></p>
+      </div>
     </div>
+
+    <script>
+      document.querySelectorAll(".type-option").forEach((opt) => {
+        opt.addEventListener("click", () => {
+          document
+            .querySelectorAll(".type-option")
+            .forEach((o) => o.classList.remove("selected"));
+          opt.classList.add("selected");
+        });
+      });
+    </script>
   </body>
 </html>
