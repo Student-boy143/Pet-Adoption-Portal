@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Adopt a Pet — FurEver Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/header.css" />
+    <link rel="stylesheet" href="styles/adopt.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="header-left">
+          <div class="logo-circle">🐾</div>
+          <h1 class="site-title">FurEver Home</h1>
+        </div>
+        <nav class="header-right">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="adopt.html" class="nav-link active">Adopt</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="login.html" class="btn btn-ghost">Sign in</a>
+          <a href="register.html" class="btn btn-primary">Register</a>
+        </nav>
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+      </header>
+
+      <!-- PAGE HERO -->
+      <section class="page-hero">
+        <h1>Find Your <em>Perfect</em> Pet 🐾</h1>
+        <p>Browse our verified listings and meet your new best friend.</p>
+      </section>
+
+      <!-- FILTERS -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>Pet Type</label>
+          <select onchange="filterPets()">
+            <option value="all">All Pets</option>
+            <option value="dog">🐕 Dogs</option>
+            <option value="cat">🐈 Cats</option>
+            <option value="rabbit">🐇 Rabbits</option>
+            <option value="bird">🦜 Birds</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Age</label>
+          <select>
+            <option>Any Age</option>
+            <option>Puppy/Kitten (0–1y)</option>
+            <option>Young (1–3y)</option>
+            <option>Adult (3–7y)</option>
+            <option>Senior (7y+)</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Gender</label>
+          <select>
+            <option>Any</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>City</label>
+          <select>
+            <option>All Cities</option>
+            <option>Mumbai</option>
+            <option>Delhi</option>
+            <option>Bengaluru</option>
+            <option>Pune</option>
+            <option>Chennai</option>
+            <option>Hyderabad</option>
+          </select>
+        </div>
+        <button class="btn btn-primary">Search 🔍</button>
+      </div>
+
+      <!-- PET LISTINGS -->
+      <section class="listings-section">
+        <div class="listings-header">
+          <h2>24 Pets Available</h2>
+          <div class="sort-row">
+            <span>Sort by:</span>
+            <select>
+              <option>Newest First</option>
+              <option>Oldest First</option>
+              <option>Closest to You</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="listings-grid">
+          <!-- Dog cards -->
+          <div class="listing-card" data-type="dog">
+            <div class="listing-img dog-bg">🐕</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-dog">Dog</span
+                ><span class="tag tag-male">Male</span>
+              </div>
+              <h3>Bruno</h3>
+              <p class="listing-meta">Labrador · 2 years</p>
+              <p class="listing-desc">
+                Bruno is playful, house-trained, and great with kids. Looking
+                for an active family.
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Mumbai</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="listing-card" data-type="cat">
+            <div class="listing-img cat-bg">🐈</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-cat">Cat</span
+                ><span class="tag tag-female">Female</span>
+              </div>
+              <h3>Mochi</h3>
+              <p class="listing-meta">Persian · 1 year</p>
+              <p class="listing-desc">
+                Mochi is gentle, loves cuddles, and gets along well with other
+                cats.
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Pune</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="listing-card" data-type="rabbit">
+            <div class="listing-img rabbit-bg">🐇</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-rabbit">Rabbit</span
+                ><span class="tag tag-male">Male</span>
+              </div>
+              <h3>Oreo</h3>
+              <p class="listing-meta">Holland Lop · 8 months</p>
+              <p class="listing-desc">
+                Oreo is curious and friendly. Perfect for apartment living.
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Delhi</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="listing-card" data-type="dog">
+            <div class="listing-img dog-bg">🐩</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-dog">Dog</span
+                ><span class="tag tag-female">Female</span>
+              </div>
+              <h3>Daisy</h3>
+              <p class="listing-meta">Poodle · 3 years</p>
+              <p class="listing-desc">
+                Daisy is smart, well-trained, and loves to learn new tricks.
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Bengaluru</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="listing-card" data-type="cat">
+            <div class="listing-img cat-bg">🐱</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-cat">Cat</span
+                ><span class="tag tag-male">Male</span>
+              </div>
+              <h3>Tiger</h3>
+              <p class="listing-meta">Tabby · 4 years</p>
+              <p class="listing-desc">
+                Tiger is calm and independent. Great for working professionals.
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Chennai</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="listing-card" data-type="bird">
+            <div class="listing-img bird-bg">🦜</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-bird">Bird</span
+                ><span class="tag tag-female">Female</span>
+              </div>
+              <h3>Kiwi</h3>
+              <p class="listing-meta">Parrot · 2 years</p>
+              <p class="listing-desc">
+                Kiwi can say a few words and loves music. Very social and fun!
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Hyderabad</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="listing-card" data-type="dog">
+            <div class="listing-img dog-bg">🐶</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-dog">Dog</span
+                ><span class="tag tag-male">Male</span>
+              </div>
+              <h3>Rocky</h3>
+              <p class="listing-meta">Beagle · 1 year</p>
+              <p class="listing-desc">
+                Rocky is full of energy and loves outdoor adventures.
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Mumbai</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="listing-card" data-type="cat">
+            <div class="listing-img cat-bg">🐈‍⬛</div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag tag-cat">Cat</span
+                ><span class="tag tag-female">Female</span>
+              </div>
+              <h3>Midnight</h3>
+              <p class="listing-meta">Black Cat · 3 years</p>
+              <p class="listing-desc">
+                Midnight is elegant, playful, and loves sitting on laps.
+              </p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 Kolkata</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="load-more">
+          <button class="btn btn-outline btn-lg">Load More Pets →</button>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <div class="logo-circle">🐾</div>
+            <h2>FurEver Home</h2>
+            <p>Connecting loving hearts with furry friends since 2024.</p>
+          </div>
+          <div class="footer-links">
+            <h4>Quick Links</h4>
+            <a href="index.html">Home</a>
+            <a href="adopt.html">Adopt a Pet</a>
+            <a href="about.html">About Us</a>
+          </div>
+          <div class="footer-links">
+            <h4>Pets</h4>
+            <a href="#">Dogs</a>
+            <a href="#">Cats</a>
+            <a href="#">Rabbits</a>
+            <a href="#">Birds</a>
+          </div>
+          <div class="footer-links">
+            <h4>Contact</h4>
+            <a href="#">hello@fureverhome.in</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 FurEver Home. Made with ❤️ for animals everywhere.</p>
+        </div>
+      </footer>
+    </div>
+    <script>
+      function toggleMenu() {
+        document.querySelector(".header-right").classList.toggle("open");
+      }
+    </script>
+  </body>
+</html>
