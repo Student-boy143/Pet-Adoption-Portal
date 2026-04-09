@@ -2,24 +2,146 @@
 <html lang="en">
   <head>
     <title>FurEver Home</title>
-
-    <!-- google font added-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
-
-    <!-- existing css -->
     <link rel="stylesheet" href="styles/global.css" />
     <link rel="stylesheet" href="styles/header.css" />
     <link rel="stylesheet" href="styles/main.css" />
+    <style>
+      /* ── Scroll-reveal base state ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(32px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      /* staggered children */
+      .reveal-group > * {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
+      }
+      .reveal-group.visible > *:nth-child(1) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.05s;
+      }
+      .reveal-group.visible > *:nth-child(2) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.15s;
+      }
+      .reveal-group.visible > *:nth-child(3) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.25s;
+      }
+      .reveal-group.visible > *:nth-child(4) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.35s;
+      }
+      .reveal-group.visible > *:nth-child(5) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.45s;
+      }
+      .reveal-group.visible > *:nth-child(6) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.55s;
+      }
+
+      /* ── Hero entrance ── */
+      .hero-content {
+        animation: heroSlideIn 0.8s ease both;
+      }
+      .hero-visual {
+        animation: heroSlideIn 0.8s 0.2s ease both;
+      }
+      @keyframes heroSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Pet card photo ── */
+      .pet-photo {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .pet-card:hover .pet-photo {
+        transform: scale(1.05);
+      }
+      .pet-card {
+        overflow: hidden;
+      }
+      .pet-photo-wrap {
+        overflow: hidden;
+        height: 180px;
+      }
+
+      /* ── Hero visual cards with photos ── */
+      .hero-card {
+        padding: 0;
+        overflow: hidden;
+        gap: 0;
+      }
+      .hero-card img {
+        width: 100%;
+        height: 110px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .hero-card:hover img {
+        transform: scale(1.08);
+      }
+      .hero-card-label {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--muted);
+        font-family: var(--font-body);
+        text-align: center;
+      }
+
+      /* ── Stat counter ── */
+      .stat strong {
+        display: inline-block;
+      }
+
+      /* ── Testimonial avatars ── */
+      .t-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
-  <body>
     <div class="container">
-      <!-- header -->
+      <!-- HEADER -->
       <header class="header">
         <div class="header-left">
           <div class="logo-circle">🐾</div>
@@ -32,9 +154,10 @@
           <a href="login.html" class="btn btn-ghost">Sign in</a>
           <a href="register.html" class="btn btn-primary">Register</a>
         </nav>
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
       </header>
 
-      <!-- Main -->
+      <!-- HERO -->
       <section class="hero">
         <div class="hero-content">
           <span class="hero-badge">🐶 500+ Pets Waiting</span>
@@ -51,33 +174,67 @@
           </div>
         </div>
         <div class="hero-visual">
-          <div class="hero-card hero-card-1">🐕<span>Max, 3y</span></div>
-          <div class="hero-card hero-card-2">🐈<span>Luna, 2y</span></div>
-          <div class="hero-card hero-card-3">🐇<span>Coco, 1y</span></div>
-          <div class="hero-card hero-card-4">🐩<span>Bella, 4y</span></div>
+          <div class="hero-card hero-card-1">
+            <img
+              src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=300&q=80"
+              alt="Dog Max"
+            />
+            <div class="hero-card-label">Max, 3y · Labrador</div>
+          </div>
+          <div class="hero-card hero-card-2">
+            <img
+              src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&q=80"
+              alt="Cat Luna"
+            />
+            <div class="hero-card-label">Luna, 2y · Persian</div>
+          </div>
+          <div class="hero-card hero-card-3">
+            <img
+              src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=300&q=80"
+              alt="Rabbit Coco"
+            />
+            <div class="hero-card-label">Coco, 1y · Lop</div>
+          </div>
+          <div class="hero-card hero-card-4">
+            <img
+              src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300&q=80"
+              alt="Dog Bella"
+            />
+            <div class="hero-card-label">Bella, 4y · Poodle</div>
+          </div>
         </div>
       </section>
 
-      <!-- stats bar -->
+      <!-- STATS BAR -->
       <div class="stats-bar">
-        <div class="stat"><strong>1,240+</strong><span>Pets Adopted</span></div>
-        <div class="stat-divider"></div>
         <div class="stat">
-          <strong>320+</strong><span>Rescue Partners</span>
+          <strong data-target="1240" class="counter">0</strong
+          ><span>Pets Adopted</span>
         </div>
         <div class="stat-divider"></div>
-        <div class="stat"><strong>50+</strong><span>Cities Covered</span></div>
+        <div class="stat">
+          <strong data-target="320" class="counter">0</strong
+          ><span>Rescue Partners</span>
+        </div>
         <div class="stat-divider"></div>
-        <div class="stat"><strong>98%</strong><span>Happy Families</span></div>
+        <div class="stat">
+          <strong data-target="50" class="counter">0</strong
+          ><span>Cities Covered</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <strong data-target="98" class="counter">0</strong
+          ><span>% Happy Families</span>
+        </div>
       </div>
 
-      <!-- Why choose us -->
+      <!-- WHY CHOOSE US -->
       <section class="why-section">
-        <div class="section-header">
+        <div class="section-header reveal">
           <h2>Why Choose <span class="accent">FurEver Home?</span></h2>
           <p>We make pet adoption simple, safe, and joyful.</p>
         </div>
-        <div class="features-grid">
+        <div class="features-grid reveal-group">
           <div class="feature-card">
             <div class="feature-icon">❤️</div>
             <h3>Trusted & Verified</h3>
@@ -129,15 +286,21 @@
         </div>
       </section>
 
-      <!-- featured pets -->
+      <!-- FEATURED PETS -->
       <section class="featured-section">
-        <div class="section-header">
+        <div class="section-header reveal">
           <h2>🐾 Featured Pets</h2>
           <p>These adorable animals are ready to meet you!</p>
         </div>
-        <div class="pets-grid">
+        <div class="pets-grid reveal-group">
           <div class="pet-card">
-            <div class="pet-emoji">🐕</div>
+            <div class="pet-photo-wrap">
+              <img
+                class="pet-photo"
+                src="https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=400&q=80"
+                alt="Bruno the Labrador"
+              />
+            </div>
             <div class="pet-info">
               <h3>Bruno</h3>
               <p class="pet-meta">Labrador · 2 years · Male</p>
@@ -146,7 +309,13 @@
             </div>
           </div>
           <div class="pet-card">
-            <div class="pet-emoji">🐈</div>
+            <div class="pet-photo-wrap">
+              <img
+                class="pet-photo"
+                src="https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400&q=80"
+                alt="Mochi the cat"
+              />
+            </div>
             <div class="pet-info">
               <h3>Mochi</h3>
               <p class="pet-meta">Persian · 1 year · Female</p>
@@ -155,7 +324,13 @@
             </div>
           </div>
           <div class="pet-card">
-            <div class="pet-emoji">🐇</div>
+            <div class="pet-photo-wrap">
+              <img
+                class="pet-photo"
+                src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=400&q=80"
+                alt="Oreo the rabbit"
+              />
+            </div>
             <div class="pet-info">
               <h3>Oreo</h3>
               <p class="pet-meta">Holland Lop · 8 months · Male</p>
@@ -164,7 +339,13 @@
             </div>
           </div>
           <div class="pet-card">
-            <div class="pet-emoji">🐩</div>
+            <div class="pet-photo-wrap">
+              <img
+                class="pet-photo"
+                src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80"
+                alt="Daisy the Poodle"
+              />
+            </div>
             <div class="pet-info">
               <h3>Daisy</h3>
               <p class="pet-meta">Poodle · 3 years · Female</p>
@@ -173,20 +354,20 @@
             </div>
           </div>
         </div>
-        <div class="center-cta">
+        <div class="center-cta reveal">
           <a href="adopt.html" class="btn btn-outline btn-lg"
             >View All Pets →</a
           >
         </div>
       </section>
 
-      <!-- How works -->
+      <!-- HOW IT WORKS -->
       <section class="how-section">
-        <div class="section-header">
+        <div class="section-header reveal">
           <h2>How It Works</h2>
           <p>Three simple steps to find your forever companion.</p>
         </div>
-        <div class="steps-row">
+        <div class="steps-row reveal-group">
           <div class="step">
             <div class="step-num">01</div>
             <h3>Browse & Search</h3>
@@ -211,39 +392,54 @@
         </div>
       </section>
 
-      <!-- testinomials -->
+      <!-- TESTIMONIALS -->
       <section class="testimonials-section">
-        <div class="section-header">
+        <div class="section-header reveal">
           <h2>💛 Happy Families</h2>
           <p>Thousands of pets have found their forever homes through us.</p>
         </div>
-        <div class="testimonials-grid">
+        <div class="testimonials-grid reveal-group">
           <div class="testimonial-card">
+            <img
+              class="t-avatar"
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80"
+              alt="Priya"
+            />
             <p>
               "We found our golden retriever Max on FurEver Home. The process
               was so smooth and the rescuer was amazing. Couldn't be happier!"
             </p>
-            <div class="testimonial-author">— Samiksha P., Mumbai</div>
+            <div class="testimonial-author">— Priya S., Mumbai</div>
           </div>
           <div class="testimonial-card">
+            <img
+              class="t-avatar"
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80"
+              alt="Arjun"
+            />
             <p>
               "Adopted two cats last year. The support team was incredible —
               they even helped us with tips for the first week. Highly
               recommend!"
             </p>
-            <div class="testimonial-author">— Sara P., Bengaluru</div>
+            <div class="testimonial-author">— Arjun M., Bengaluru</div>
           </div>
           <div class="testimonial-card">
+            <img
+              class="t-avatar"
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80"
+              alt="Deepa"
+            />
             <p>
               "As a rescuer, this platform helped me find loving homes for 40+
               animals. It's a blessing for the community!"
             </p>
-            <div class="testimonial-author">— Ramesh P., Chennai</div>
+            <div class="testimonial-author">— Deepa R., Chennai</div>
           </div>
         </div>
       </section>
 
-      <!-- Footer -->
+      <!-- FOOTER -->
       <footer class="footer">
         <div class="footer-top">
           <div class="footer-brand">
@@ -275,15 +471,69 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© 2026 FurEver Home. Made with ❤️ for animals everywhere.</p>
+          <p>© 2024 FurEver Home. Made with ❤️ for animals everywhere.</p>
         </div>
       </footer>
     </div>
-<script>
+
+    <script>
+      /* ── Mobile menu ── */
       function toggleMenu() {
-        const nav = document.querySelector(".header-right");
-        nav.classList.toggle("open");
+        document.querySelector(".header-right").classList.toggle("open");
       }
+
+      /* ── Scroll-reveal with IntersectionObserver ── */
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target); // fire once only
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
+
+      document
+        .querySelectorAll(".reveal, .reveal-group")
+        .forEach((el) => observer.observe(el));
+
+      /* ── Animated number counters ── */
+      function animateCounter(el) {
+        const target = parseInt(el.dataset.target);
+        const suffix = el.nextSibling?.textContent?.trim().startsWith("%")
+          ? ""
+          : "+";
+        const duration = 1800;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const tick = () => {
+          current = Math.min(current + step, target);
+          el.textContent =
+            Math.floor(current).toLocaleString() +
+            (current >= target ? suffix : "");
+          if (current < target) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+
+      // Trigger counters when stats bar enters view
+      const statsObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.querySelectorAll(".counter").forEach(animateCounter);
+              statsObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.5 },
+      );
+
+      const statsBar = document.querySelector(".stats-bar");
+      if (statsBar) statsObserver.observe(statsBar);
     </script>
   </body>
 </html>

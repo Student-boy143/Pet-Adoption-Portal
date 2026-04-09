@@ -11,6 +11,70 @@
     <link rel="stylesheet" href="styles/global.css" />
     <link rel="stylesheet" href="styles/header.css" />
     <link rel="stylesheet" href="styles/adopt.css" />
+    <style>
+      .listing-img {
+        height: 200px;
+        padding: 0;
+        overflow: hidden;
+        display: block;
+        font-size: unset;
+      }
+      .listing-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .listing-card:hover .listing-img img {
+        transform: scale(1.06);
+      }
+
+      .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--muted);
+      }
+      .empty-state .empty-emoji {
+        font-size: 3.5rem;
+        display: block;
+        margin-bottom: 14px;
+      }
+      .empty-state h3 {
+        font-family: var(--font-display);
+        color: var(--brown);
+        margin-bottom: 8px;
+      }
+
+      .listing-card {
+        animation: cardIn 0.35s ease both;
+      }
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .filter-group select.active-filter {
+        border-color: var(--coral);
+        background-color: #fff5f5;
+      }
+
+      #result-count {
+        font-size: 0.85rem;
+        background: var(--warm);
+        color: var(--brown);
+        padding: 4px 12px;
+        border-radius: var(--radius-xl);
+        font-weight: 700;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -39,7 +103,7 @@
       <div class="filters-bar">
         <div class="filter-group">
           <label>Pet Type</label>
-          <select onchange="filterPets()">
+          <select id="filter-type">
             <option value="all">All Pets</option>
             <option value="dog">🐕 Dogs</option>
             <option value="cat">🐈 Cats</option>
@@ -49,210 +113,65 @@
         </div>
         <div class="filter-group">
           <label>Age</label>
-          <select>
-            <option>Any Age</option>
-            <option>Puppy/Kitten (0–1y)</option>
-            <option>Young (1–3y)</option>
-            <option>Adult (3–7y)</option>
-            <option>Senior (7y+)</option>
+          <select id="filter-age">
+            <option value="all">Any Age</option>
+            <option value="young">Young (0–2y)</option>
+            <option value="adult">Adult (2–5y)</option>
+            <option value="senior">Senior (5y+)</option>
           </select>
         </div>
         <div class="filter-group">
           <label>Gender</label>
-          <select>
-            <option>Any</option>
-            <option>Male</option>
-            <option>Female</option>
+          <select id="filter-gender">
+            <option value="all">Any</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
           </select>
         </div>
         <div class="filter-group">
           <label>City</label>
-          <select>
-            <option>All Cities</option>
-            <option>Mumbai</option>
-            <option>Delhi</option>
-            <option>Bengaluru</option>
-            <option>Pune</option>
-            <option>Chennai</option>
-            <option>Hyderabad</option>
+          <select id="filter-city">
+            <option value="all">All Cities</option>
+            <option value="mumbai">Mumbai</option>
+            <option value="delhi">Delhi</option>
+            <option value="bengaluru">Bengaluru</option>
+            <option value="pune">Pune</option>
+            <option value="chennai">Chennai</option>
+            <option value="hyderabad">Hyderabad</option>
+            <option value="kolkata">Kolkata</option>
           </select>
         </div>
-        <button class="btn btn-primary">Search 🔍</button>
+        <button class="btn btn-primary" onclick="applyFilters()">
+          Search 🔍
+        </button>
+        <button class="btn btn-ghost" onclick="resetFilters()">Reset</button>
       </div>
 
-      <!-- PET LISTINGS -->
+      <!-- LISTINGS -->
       <section class="listings-section">
         <div class="listings-header">
-          <h2>24 Pets Available</h2>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <h2 id="listings-title">Pets Available</h2>
+            <span id="result-count"></span>
+          </div>
           <div class="sort-row">
             <span>Sort by:</span>
-            <select>
-              <option>Newest First</option>
-              <option>Oldest First</option>
-              <option>Closest to You</option>
+            <select id="sort-select" onchange="applyFilters()">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="name-asc">Name A–Z</option>
+              <option value="name-desc">Name Z–A</option>
             </select>
           </div>
         </div>
 
-        <div class="listings-grid">
-          <!-- Dog cards -->
-          <div class="listing-card" data-type="dog">
-            <div class="listing-img dog-bg">🐕</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-dog">Dog</span
-                ><span class="tag tag-male">Male</span>
-              </div>
-              <h3>Bruno</h3>
-              <p class="listing-meta">Labrador · 2 years</p>
-              <p class="listing-desc">
-                Bruno is playful, house-trained, and great with kids. Looking
-                for an active family.
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Mumbai</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
+        <!-- Cards are rendered by JS -->
+        <div class="listings-grid" id="listings-grid"></div>
 
-          <div class="listing-card" data-type="cat">
-            <div class="listing-img cat-bg">🐈</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-cat">Cat</span
-                ><span class="tag tag-female">Female</span>
-              </div>
-              <h3>Mochi</h3>
-              <p class="listing-meta">Persian · 1 year</p>
-              <p class="listing-desc">
-                Mochi is gentle, loves cuddles, and gets along well with other
-                cats.
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Pune</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="listing-card" data-type="rabbit">
-            <div class="listing-img rabbit-bg">🐇</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-rabbit">Rabbit</span
-                ><span class="tag tag-male">Male</span>
-              </div>
-              <h3>Oreo</h3>
-              <p class="listing-meta">Holland Lop · 8 months</p>
-              <p class="listing-desc">
-                Oreo is curious and friendly. Perfect for apartment living.
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Delhi</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="listing-card" data-type="dog">
-            <div class="listing-img dog-bg">🐩</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-dog">Dog</span
-                ><span class="tag tag-female">Female</span>
-              </div>
-              <h3>Daisy</h3>
-              <p class="listing-meta">Poodle · 3 years</p>
-              <p class="listing-desc">
-                Daisy is smart, well-trained, and loves to learn new tricks.
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Bengaluru</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="listing-card" data-type="cat">
-            <div class="listing-img cat-bg">🐱</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-cat">Cat</span
-                ><span class="tag tag-male">Male</span>
-              </div>
-              <h3>Tiger</h3>
-              <p class="listing-meta">Tabby · 4 years</p>
-              <p class="listing-desc">
-                Tiger is calm and independent. Great for working professionals.
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Chennai</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="listing-card" data-type="bird">
-            <div class="listing-img bird-bg">🦜</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-bird">Bird</span
-                ><span class="tag tag-female">Female</span>
-              </div>
-              <h3>Kiwi</h3>
-              <p class="listing-meta">Parrot · 2 years</p>
-              <p class="listing-desc">
-                Kiwi can say a few words and loves music. Very social and fun!
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Hyderabad</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="listing-card" data-type="dog">
-            <div class="listing-img dog-bg">🐶</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-dog">Dog</span
-                ><span class="tag tag-male">Male</span>
-              </div>
-              <h3>Rocky</h3>
-              <p class="listing-meta">Beagle · 1 year</p>
-              <p class="listing-desc">
-                Rocky is full of energy and loves outdoor adventures.
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Mumbai</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="listing-card" data-type="cat">
-            <div class="listing-img cat-bg">🐈‍⬛</div>
-            <div class="listing-body">
-              <div class="listing-tags">
-                <span class="tag tag-cat">Cat</span
-                ><span class="tag tag-female">Female</span>
-              </div>
-              <h3>Midnight</h3>
-              <p class="listing-meta">Black Cat · 3 years</p>
-              <p class="listing-desc">
-                Midnight is elegant, playful, and loves sitting on laps.
-              </p>
-              <div class="listing-footer">
-                <span class="listing-loc">📍 Kolkata</span>
-                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="load-more">
-          <button class="btn btn-outline btn-lg">Load More Pets →</button>
+        <div class="load-more" id="load-more-wrap" style="display: none">
+          <button class="btn btn-outline btn-lg" onclick="loadMore()">
+            Load More Pets →
+          </button>
         </div>
       </section>
 
@@ -283,14 +202,338 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© 2026 FurEver Home. Made with ❤️ for animals everywhere.</p>
+          <p>© 2024 FurEver Home. Made with ❤️ for animals everywhere.</p>
         </div>
       </footer>
     </div>
+
     <script>
+      const ALL_PETS = [
+        {
+          id: 1,
+          name: "Bruno",
+          type: "dog",
+          breed: "Labrador",
+          age: 2,
+          ageLabel: "2 years",
+          ageGroup: "young",
+          gender: "male",
+          city: "mumbai",
+          cityLabel: "Mumbai",
+          desc: "Bruno is playful, house-trained, and great with kids. Looking for an active family.",
+          img: "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=400&q=80",
+          date: 5,
+        },
+        {
+          id: 2,
+          name: "Mochi",
+          type: "cat",
+          breed: "Persian",
+          age: 1,
+          ageLabel: "1 year",
+          ageGroup: "young",
+          gender: "female",
+          city: "pune",
+          cityLabel: "Pune",
+          desc: "Mochi is gentle, loves cuddles, and gets along well with other cats.",
+          img: "https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400&q=80",
+          date: 4,
+        },
+        {
+          id: 3,
+          name: "Oreo",
+          type: "rabbit",
+          breed: "Holland Lop",
+          age: 0.7,
+          ageLabel: "8 months",
+          ageGroup: "young",
+          gender: "male",
+          city: "delhi",
+          cityLabel: "Delhi",
+          desc: "Oreo is curious and friendly. Perfect for apartment living.",
+          img: "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=400&q=80",
+          date: 3,
+        },
+        {
+          id: 4,
+          name: "Daisy",
+          type: "dog",
+          breed: "Poodle",
+          age: 3,
+          ageLabel: "3 years",
+          ageGroup: "adult",
+          gender: "female",
+          city: "bengaluru",
+          cityLabel: "Bengaluru",
+          desc: "Daisy is smart, well-trained, and loves to learn new tricks.",
+          img: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&q=80",
+          date: 2,
+        },
+        {
+          id: 5,
+          name: "Tiger",
+          type: "cat",
+          breed: "Tabby",
+          age: 4,
+          ageLabel: "4 years",
+          ageGroup: "adult",
+          gender: "male",
+          city: "chennai",
+          cityLabel: "Chennai",
+          desc: "Tiger is calm and independent. Great for working professionals.",
+          img: "https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=400&q=80",
+          date: 8,
+        },
+        {
+          id: 6,
+          name: "Kiwi",
+          type: "bird",
+          breed: "Parrot",
+          age: 2,
+          ageLabel: "2 years",
+          ageGroup: "young",
+          gender: "female",
+          city: "hyderabad",
+          cityLabel: "Hyderabad",
+          desc: "Kiwi can say a few words and loves music. Very social and fun!",
+          img: "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=400&q=80",
+          date: 1,
+        },
+        {
+          id: 7,
+          name: "Rocky",
+          type: "dog",
+          breed: "Beagle",
+          age: 1,
+          ageLabel: "1 year",
+          ageGroup: "young",
+          gender: "male",
+          city: "mumbai",
+          cityLabel: "Mumbai",
+          desc: "Rocky is full of energy and loves outdoor adventures.",
+          img: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80",
+          date: 6,
+        },
+        {
+          id: 8,
+          name: "Midnight",
+          type: "cat",
+          breed: "Black Cat",
+          age: 3,
+          ageLabel: "3 years",
+          ageGroup: "adult",
+          gender: "female",
+          city: "kolkata",
+          cityLabel: "Kolkata",
+          desc: "Midnight is elegant, playful, and loves sitting on laps.",
+          img: "https://images.unsplash.com/photo-1519052537078-e6302a4968d4?w=400&q=80",
+          date: 7,
+        },
+        {
+          id: 9,
+          name: "Charlie",
+          type: "dog",
+          breed: "Golden Retriever",
+          age: 5,
+          ageLabel: "5 years",
+          ageGroup: "adult",
+          gender: "male",
+          city: "delhi",
+          cityLabel: "Delhi",
+          desc: "Charlie is a gentle giant who loves children and long walks in the park.",
+          img: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80",
+          date: 9,
+        },
+        {
+          id: 10,
+          name: "Snowball",
+          type: "rabbit",
+          breed: "Angora",
+          age: 1.5,
+          ageLabel: "1.5 years",
+          ageGroup: "young",
+          gender: "female",
+          city: "pune",
+          cityLabel: "Pune",
+          desc: "Snowball is fluffy, gentle, and loves being petted. Very easy to care for.",
+          img: "https://images.unsplash.com/photo-1623387641168-d9803ddd3f35?w=400&q=80",
+          date: 10,
+        },
+        {
+          id: 11,
+          name: "Simba",
+          type: "cat",
+          breed: "Maine Coon",
+          age: 6,
+          ageLabel: "6 years",
+          ageGroup: "senior",
+          gender: "male",
+          city: "bengaluru",
+          cityLabel: "Bengaluru",
+          desc: "Simba is a wise, calm senior cat who loves quiet homes and warm laps.",
+          img: "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=400&q=80",
+          date: 11,
+        },
+        {
+          id: 12,
+          name: "Pepper",
+          type: "bird",
+          breed: "Cockatiel",
+          age: 3,
+          ageLabel: "3 years",
+          ageGroup: "adult",
+          gender: "male",
+          city: "mumbai",
+          cityLabel: "Mumbai",
+          desc: "Pepper whistles tunes and loves sitting on shoulders. Very affectionate.",
+          img: "https://images.unsplash.com/photo-1606567595334-d39972c85dbe?w=400&q=80",
+          date: 12,
+        },
+      ];
+
+      const PAGE_SIZE = 8;
+      let visibleCount = PAGE_SIZE;
+      let filteredPets = [...ALL_PETS];
+
+      function getTagClass(type) {
+        return (
+          {
+            dog: "tag-dog",
+            cat: "tag-cat",
+            rabbit: "tag-rabbit",
+            bird: "tag-bird",
+          }[type] || "tag-dog"
+        );
+      }
+
+      function capitalise(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+
+      function buildCard(pet) {
+        return `
+          <div class="listing-card" data-id="${pet.id}">
+            <div class="listing-img">
+              <img src="${pet.img}" alt="${pet.name}" loading="lazy" />
+            </div>
+            <div class="listing-body">
+              <div class="listing-tags">
+                <span class="tag ${getTagClass(pet.type)}">${capitalise(pet.type)}</span>
+                <span class="tag ${pet.gender === "male" ? "tag-male" : "tag-female"}">${capitalise(pet.gender)}</span>
+              </div>
+              <h3>${pet.name}</h3>
+              <p class="listing-meta">${pet.breed} · ${pet.ageLabel}</p>
+              <p class="listing-desc">${pet.desc}</p>
+              <div class="listing-footer">
+                <span class="listing-loc">📍 ${pet.cityLabel}</span>
+                <a href="#" class="btn btn-primary btn-sm">Adopt Me</a>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      function renderGrid() {
+        const grid = document.getElementById("listings-grid");
+        const shown = filteredPets.slice(0, visibleCount);
+
+        if (shown.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <span class="empty-emoji">🔍</span>
+              <h3>No pets found</h3>
+              <p>Try adjusting your filters — there are plenty of pets waiting!</p>
+            </div>`;
+        } else {
+          grid.innerHTML = shown.map(buildCard).join("");
+        }
+
+        // result count badge
+        document.getElementById("result-count").textContent =
+          filteredPets.length + " pet" + (filteredPets.length !== 1 ? "s" : "");
+
+        // load more button
+        document.getElementById("load-more-wrap").style.display =
+          filteredPets.length > visibleCount ? "block" : "none";
+      }
+
+      function applyFilters() {
+        const type = document.getElementById("filter-type").value;
+        const age = document.getElementById("filter-age").value;
+        const gender = document.getElementById("filter-gender").value;
+        const city = document.getElementById("filter-city").value;
+        const sort = document.getElementById("sort-select").value;
+
+        // highlight active selects
+        [
+          ["filter-type", type],
+          ["filter-age", age],
+          ["filter-gender", gender],
+          ["filter-city", city],
+        ].forEach(([id, val]) => {
+          document
+            .getElementById(id)
+            .classList.toggle("active-filter", val !== "all");
+        });
+
+        // filter
+        filteredPets = ALL_PETS.filter((p) => {
+          if (type !== "all" && p.type !== type) return false;
+          if (age !== "all" && p.ageGroup !== age) return false;
+          if (gender !== "all" && p.gender !== gender) return false;
+          if (city !== "all" && p.city !== city) return false;
+          return true;
+        });
+
+        // sort
+        filteredPets.sort((a, b) => {
+          if (sort === "newest") return b.date - a.date;
+          if (sort === "oldest") return a.date - b.date;
+          if (sort === "name-asc") return a.name.localeCompare(b.name);
+          if (sort === "name-desc") return b.name.localeCompare(a.name);
+          return 0;
+        });
+
+        visibleCount = PAGE_SIZE;
+        renderGrid();
+      }
+
+      function resetFilters() {
+        ["filter-type", "filter-age", "filter-gender", "filter-city"].forEach(
+          (id) => {
+            const el = document.getElementById(id);
+            el.value = "all";
+            el.classList.remove("active-filter");
+          },
+        );
+        document.getElementById("sort-select").value = "newest";
+        applyFilters();
+      }
+
+      function loadMore() {
+        visibleCount += PAGE_SIZE;
+        renderGrid();
+        // scroll smoothly to newly revealed cards
+        const cards = document.querySelectorAll(".listing-card");
+        if (cards[PAGE_SIZE])
+          cards[PAGE_SIZE].scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+      }
+
       function toggleMenu() {
         document.querySelector(".header-right").classList.toggle("open");
       }
+
+      /* ── Init ── */
+      applyFilters();
+
+      /* ── Live filter on select change ── */
+      ["filter-type", "filter-age", "filter-gender", "filter-city"].forEach(
+        (id) => {
+          document.getElementById(id).addEventListener("change", applyFilters);
+        },
+      );
     </script>
   </body>
 </html>
