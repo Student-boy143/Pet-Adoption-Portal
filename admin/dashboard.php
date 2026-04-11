@@ -21,20 +21,20 @@ $users = $pdo->query(
 
 //  All Pets ─
 $pets = $pdo->query(
-    'SELECT p.*, u.firstname AS seller_name FROM pets p
+    'SELECT p.*, u.name AS seller_name FROM pets p
      LEFT JOIN users u ON p.listed_by=u.id ORDER BY p.created_at DESC'
 )->fetchAll();
 
 //  All Requests 
 $requests = $pdo->query(
-    "SELECT ar.*, p.name AS pet_name, p.image_path,
-            u.firstname AS buyer_name, u.email AS buyer_email,
-            s.firstname AS seller_name
-     FROM adoption_requests ar
-     JOIN pets  p ON ar.pet_id   = p.id
-     JOIN users u ON ar.buyer_id = u.id
-     LEFT JOIN users s ON p.listed_by = s.id
-     ORDER BY ar.created_at DESC"
+    "SELECT ar.*, p.name AS pet_name, p.image,
+          u.name AS buyer_name, u.email AS buyer_email,
+          s.name AS seller_name
+    FROM adoption_requests ar
+    JOIN pets  p ON ar.pet_id = p.id
+    JOIN users u ON ar.user_id = u.id
+    LEFT JOIN users s ON p.listed_by = s.id
+    ORDER BY ar.created_at DESC"
 )->fetchAll();
 
 $flash = $_SESSION['success'] ?? ''; unset($_SESSION['success']);
@@ -103,7 +103,7 @@ $tab = $_GET['tab'] ?? 'overview';
           <?php foreach ($users as $u): ?>
             <tr>
               <td>#<?= $u['id'] ?></td>
-              <td><?= htmlspecialchars($u['firstname'].' '.$u['lastname']) ?></td>
+              <td><?= htmlspecialchars($u['name']) ?></td>
               <td><?= htmlspecialchars($u['email']) ?></td>
               <td><span class="status-badge status-<?= $u['role'] ?>"><?= ucfirst($u['role']) ?></span></td>
               <td><?= date('d M Y', strtotime($u['created_at'])) ?></td>
@@ -142,7 +142,7 @@ $tab = $_GET['tab'] ?? 'overview';
           <tbody>
           <?php foreach ($pets as $p): ?>
             <tr>
-              <td><img src="../<?= htmlspecialchars($p['image_path']) ?>" class="table-thumb" alt=""/></td>
+              <td><img src="../<?= htmlspecialchars($p['image']) ?>" class="table-thumb" alt=""/></td>
               <td><strong><?= htmlspecialchars($p['name']) ?></strong><br/><small><?= htmlspecialchars($p['breed']) ?></small></td>
               <td><?= ucfirst($p['type']) ?></td>
               <td><?= htmlspecialchars($p['city']) ?></td>
@@ -174,7 +174,7 @@ $tab = $_GET['tab'] ?? 'overview';
           <?php foreach ($requests as $r): ?>
             <tr>
               <td>
-                <img src="../<?= htmlspecialchars($r['image_path']) ?>" class="table-thumb" alt=""/>
+                <img src="../<?= htmlspecialchars($r['image']) ?>" class="table-thumb" alt=""/>
                 <?= htmlspecialchars($r['pet_name']) ?>
               </td>
               <td><?= htmlspecialchars($r['buyer_name']) ?><br/><small><?= htmlspecialchars($r['buyer_email']) ?></small></td>
