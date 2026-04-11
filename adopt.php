@@ -205,7 +205,7 @@ function sel(string $val, string $current): string {
             ?>
             <div class="listing-card">
               <div class="listing-img">
-                <img src="<?= htmlspecialchars($pet['image_path']) ?>"
+                <img src="<?= htmlspecialchars($pet['image']) ?>"
                      alt="<?= htmlspecialchars($pet['name']) ?>" loading="lazy" />
               </div>
               <div class="listing-body">
