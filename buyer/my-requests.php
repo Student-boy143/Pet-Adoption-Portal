@@ -1,25 +1,29 @@
 <?php
 // buyer/my-requests.php
+
 require_once '../includes/auth_check.php';
 requireRole('buyer');
 require_once '../includes/db.php';
 
 $buyerId = $_SESSION['user_id'];
 
+// ✅ FIXED QUERY
 $stmt = $pdo->prepare(
-    'SELECT ar.*, p.name AS pet_name, p.image_path, p.type, p.breed, p.city,
-            u.firstname AS seller_name, u.email AS seller_email
+    'SELECT ar.*, p.name AS pet_name, p.image, p.type, p.breed, p.city,
+            u.name AS seller_name, u.email AS seller_email
      FROM adoption_requests ar
      JOIN pets  p ON ar.pet_id    = p.id
      JOIN users u ON p.listed_by  = u.id
-     WHERE ar.buyer_id = $1
+     WHERE ar.user_id = ?
      ORDER BY ar.created_at DESC'
 );
 $stmt->execute([$buyerId]);
 $requests = $stmt->fetchAll();
 
-$flash = $_SESSION['success'] ?? ''; unset($_SESSION['success']);
+$flash = $_SESSION['success'] ?? '';
+unset($_SESSION['success']);
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,7 +44,9 @@ $flash = $_SESSION['success'] ?? ''; unset($_SESSION['success']);
     <nav class="header-right">
       <a href="../index.php"  class="nav-link">Home</a>
       <a href="../adopt.php"  class="nav-link">Adopt</a>
-      <span style="font-size:.9rem;font-weight:700;color:var(--brown);padding:8px 14px;">Hi, <?= userName() ?>! 👋</span>
+      <span style="font-size:.9rem;font-weight:700;color:var(--brown);padding:8px 14px;">
+        Hi, <?= userName() ?>! 👋
+      </span>
       <a href="../actions/logout.php" class="btn btn-ghost">Logout</a>
     </nav>
   </header>
@@ -53,23 +59,30 @@ $flash = $_SESSION['success'] ?? ''; unset($_SESSION['success']);
     </div>
 
     <div class="dash-main">
+
       <?php if ($flash): ?>
-        <div class="alert-success">✅ <?= htmlspecialchars($flash) ?></div>
+        <div class="alert-success"> <?= htmlspecialchars($flash) ?></div>
       <?php endif; ?>
 
       <div class="section-bar">
         <h2>My Adoption Requests</h2>
-        <span id="result-count"><?= count($requests) ?> request<?= count($requests) !== 1 ? 's' : '' ?></span>
+        <span><?= count($requests) ?> request<?= count($requests) !== 1 ? 's' : '' ?></span>
       </div>
 
       <?php if (empty($requests)): ?>
         <div style="text-align:center;padding:60px 20px;color:var(--muted);">
           <div style="font-size:3rem;margin-bottom:16px;">📭</div>
-          <h3 style="font-family:var(--font-display);color:var(--brown);margin-bottom:8px;">No requests yet</h3>
-          <p>Browse our pets and send your first adoption request!</p>
-          <a href="../adopt.php" class="btn btn-primary btn-lg" style="margin-top:20px;">Browse Pets 🐾</a>
+          <h3 style="font-family:var(--font-display);color:var(--brown);margin-bottom:8px;">
+            No requests yet
+          </h3>
+          <p>Browse pets and send your first request!</p>
+          <a href="../adopt.php" class="btn btn-primary btn-lg" style="margin-top:20px;">
+            Browse Pets
+          </a>
         </div>
+
       <?php else: ?>
+
         <div class="table-wrap">
           <table class="dash-table">
             <thead>
@@ -77,53 +90,65 @@ $flash = $_SESSION['success'] ?? ''; unset($_SESSION['success']);
                 <th>Pet</th>
                 <th>Details</th>
                 <th>Seller</th>
-                <th>My Message</th>
-                <th>Date Sent</th>
+                <th>Message</th>
+                <th>Date</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
+
             <?php foreach ($requests as $r): ?>
               <tr>
+
+                <!-- Pet -->
                 <td>
-                  <img src="../<?= htmlspecialchars($r['image_path']) ?>" class="table-thumb" alt=""/>
+                  <img src="../<?= htmlspecialchars($r['image']) ?>" class="table-thumb" alt="">
                   <strong><?= htmlspecialchars($r['pet_name']) ?></strong>
                 </td>
+
+                <!-- Details -->
                 <td>
-                  <?= ucfirst($r['type']) ?> · <?= htmlspecialchars($r['breed']) ?><br/>
-                  <small>📍 <?= htmlspecialchars($r['city']) ?></small>
+                  <?= ucfirst($r['type']) ?> · <?= htmlspecialchars($r['breed']) ?><br>
+                  <small> <?= htmlspecialchars($r['city']) ?></small>
                 </td>
+
+                <!-- Seller -->
                 <td>
-                  <?= htmlspecialchars($r['seller_name']) ?><br/>
-                  <small><a href="mailto:<?= htmlspecialchars($r['seller_email']) ?>">
-                    <?= htmlspecialchars($r['seller_email']) ?>
-                  </a></small>
+                  <?= htmlspecialchars($r['seller_name']) ?><br>
+                  <small><?= htmlspecialchars($r['seller_email']) ?></small>
                 </td>
-                <td style="max-width:200px;">
-                  <?= htmlspecialchars(substr($r['message'] ?? '—', 0, 80)) ?>
-                  <?= strlen($r['message'] ?? '') > 80 ? '…' : '' ?>
-                </td>
-                <td><?= date('d M Y', strtotime($r['created_at'])) ?></td>
+
+                <!-- Message -->
                 <td>
-                  <span class="status-badge status-<?= $r['status'] ?>">
-                    <?= ucfirst($r['status']) ?>
-                  </span>
+                  <?= htmlspecialchars(substr($r['message'] ?? '—', 0, 60)) ?>
+                </td>
+
+                <!-- Date -->
+                <td>
+                  <?= date('d M Y', strtotime($r['created_at'])) ?>
+                </td>
+
+                <!-- Status -->
+                <td>
+                  <strong><?= strtoupper($r['status']) ?></strong>
+
                   <?php if ($r['status'] === 'approved'): ?>
-                    <div style="font-size:.75rem;color:#2e7d32;margin-top:4px;">
-                      🎉 Contact the seller!
-                    </div>
+                    <div style="color:green;">Contact seller</div>
                   <?php elseif ($r['status'] === 'rejected'): ?>
-                    <div style="font-size:.75rem;color:var(--muted);margin-top:4px;">
-                      Try another pet →
-                    </div>
+                    <div style="color:red;">Try another pet</div>
                   <?php endif; ?>
+
                 </td>
+
               </tr>
             <?php endforeach; ?>
+
             </tbody>
           </table>
         </div>
+
       <?php endif; ?>
+
     </div>
   </div>
 

@@ -142,7 +142,11 @@ $tab = $_GET['tab'] ?? 'overview';
           <tbody>
           <?php foreach ($pets as $p): ?>
             <tr>
-              <td><img src="../<?= htmlspecialchars($p['image']) ?>" class="table-thumb" alt=""/></td>
+              <td>
+                <img src="<?= str_starts_with($p['image'], 'http') 
+                ? $p['image'] 
+                : '../' . $p['image'] ?>" class="table-thumb" alt=""/>
+              </td>
               <td><strong><?= htmlspecialchars($p['name']) ?></strong><br/><small><?= htmlspecialchars($p['breed']) ?></small></td>
               <td><?= ucfirst($p['type']) ?></td>
               <td><?= htmlspecialchars($p['city']) ?></td>
@@ -174,7 +178,9 @@ $tab = $_GET['tab'] ?? 'overview';
           <?php foreach ($requests as $r): ?>
             <tr>
               <td>
-                <img src="../<?= htmlspecialchars($r['image']) ?>" class="table-thumb" alt=""/>
+                <img src="<?= str_starts_with($r['image'], 'http') 
+                ? $r['image'] 
+                : '../' . $r['image'] ?>" class="table-thumb" alt=""/>
                 <?= htmlspecialchars($r['pet_name']) ?>
               </td>
               <td><?= htmlspecialchars($r['buyer_name']) ?><br/><small><?= htmlspecialchars($r['buyer_email']) ?></small></td>

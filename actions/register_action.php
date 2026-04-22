@@ -49,8 +49,7 @@ if (!empty($errors)) {
 //  Combine name (IMPORTANT FIX)
 $name = $firstname . ' ' . $lastname;
 
-// Hash password
-$hashed = password_hash($password, PASSWORD_DEFAULT);
+$hashed = $password;
 
 // Correct INSERT (name instead of firstname/lastname)
 $stmt = $pdo->prepare(

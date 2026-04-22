@@ -62,7 +62,7 @@ $error = $_SESSION['errors'][0] ?? ''; unset($_SESSION['errors']);
     <a href="../index.php" class="nav-link">Home</a>
     <a href="../adopt.php" class="nav-link">Adopt</a>
     <span style="font-size:.9rem;font-weight:700;color:var(--brown);padding:8px 14px;">
-      Hi, <?= htmlspecialchars(userName()) ?>! 🏪
+      Hi, <?= htmlspecialchars(userName()) ?>! 
     </span>
     <a href="../actions/logout.php" class="btn btn-ghost">Logout</a>
   </nav>
@@ -78,7 +78,7 @@ $error = $_SESSION['errors'][0] ?? ''; unset($_SESSION['errors']);
 
   <div class="dash-main">
 
-    <?php if ($flash): ?><div class="alert-success">✅ <?= htmlspecialchars($flash) ?></div><?php endif; ?>
+    <?php if ($flash): ?><div class="alert-success"> <?= htmlspecialchars($flash) ?></div><?php endif; ?>
     <?php if ($error): ?><div class="alert-error">⚠ <?= htmlspecialchars($error) ?></div><?php endif; ?>
 
     <!-- Stats -->
@@ -103,7 +103,11 @@ $error = $_SESSION['errors'][0] ?? ''; unset($_SESSION['errors']);
           <tbody>
           <?php foreach ($myPets as $pet): ?>
             <tr>
-              <td><img src="<?= htmlspecialchars($pet['image']) ?>" class="table-thumb"/></td>
+              <td>
+                <img src="<?= str_starts_with($pet['image'], 'http') 
+                  ? $pet['image'] 
+                  : '../' . $pet['image'] ?>" class="table-thumb"/>
+              </td>
               <td><strong><?= htmlspecialchars($pet['name']) ?></strong><br/><small><?= htmlspecialchars($pet['breed']) ?></small></td>
               <td><?= ucfirst($pet['type']) ?></td>
               <td><?= htmlspecialchars($pet['city']) ?></td>
@@ -139,8 +143,10 @@ $error = $_SESSION['errors'][0] ?? ''; unset($_SESSION['errors']);
           <?php foreach ($requests as $req): ?>
             <tr>
               <td>
-                <img src="<?= htmlspecialchars($req['image']) ?>" class="table-thumb"/>
-                <?= htmlspecialchars($req['pet_name']) ?>
+                <img src="<?= str_starts_with($req['image'], 'http') 
+                  ? $req['image'] 
+                  : '../' . $req['image'] ?>" class="table-thumb"/>
+                              <?= htmlspecialchars($req['pet_name']) ?>
               </td>
               <td><?= htmlspecialchars($req['buyer_name']) ?></td>
               <td><?= htmlspecialchars($req['buyer_email']) ?></td>

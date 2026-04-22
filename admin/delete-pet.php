@@ -1,11 +1,18 @@
 <?php
-// admin/delete-user.php
 require_once '../includes/auth_check.php';
 requireRole('admin');
 require_once '../includes/db.php';
 
-$userId = (int)($_POST['user_id'] ?? 0);
-$pdo->prepare('DELETE FROM users WHERE id=$1 AND role != $2')->execute([$userId,'admin']);
-$_SESSION['success'] = 'User deleted.';
-header('Location: dashboard.php?tab=users');
+$petId = (int)($_POST['pet_id'] ?? 0);
+
+$stmt = $pdo->prepare('DELETE FROM pets WHERE id = ?');
+$success = $stmt->execute([$petId]);
+
+if ($success) {
+    $_SESSION['success'] = 'Pet deleted successfully';
+} else {
+    $_SESSION['errors'] = ['Failed to delete pet'];
+}
+
+header('Location: dashboard.php?tab=pets');
 exit;

@@ -1,11 +1,11 @@
 <?php
 // actions/login_action.php
-// Sessions + Remember Me
+// Sessions only 
 
 session_start();
 require_once '../includes/db.php';
 
-// Show errors (for debugging — remove later)
+// Debug (remove later)
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -16,9 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Get form data
-$email      = trim($_POST['email'] ?? '');
-$password   = $_POST['password'] ?? '';
-$rememberMe = isset($_POST['remember']);
+$email    = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
 
 // Validate input
 if (empty($email) || empty($password)) {
@@ -28,12 +27,12 @@ if (empty($email) || empty($password)) {
     exit;
 }
 
-// ✅ FIXED QUERY (use ? instead of $1)
+// Fetch user
 $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND is_active = TRUE LIMIT 1');
 $stmt->execute([$email]);
 $user = $stmt->fetch();
 
-// ✅ FIXED PASSWORD CHECK
+// FIXED PASSWORD CHECK
 if (!$user || $password !== $user['password']) {
     $_SESSION['errors'] = ['Incorrect email or password.'];
     $_SESSION['old']    = ['email' => $email];
@@ -44,35 +43,10 @@ if (!$user || $password !== $user['password']) {
 // Regenerate session (security)
 session_regenerate_id(true);
 
-// ✅ FIXED FIELD NAME (name instead of firstname)
+// Store session data
 $_SESSION['user_id']   = (int) $user['id'];
 $_SESSION['firstname'] = $user['name'];
 $_SESSION['role']      = $user['role'];
-
-// Remember Me
-if ($rememberMe) {
-    $token  = bin2hex(random_bytes(32));
-    $expiry = time() + (30 * 24 * 60 * 60);
-
-    try {
-        $pdo->prepare('UPDATE users SET remember_token = ? WHERE id = ?')
-            ->execute([$token, $user['id']]);
-
-        setcookie(
-            'remember_token',
-            $token,
-            $expiry,
-            '/',
-            '',
-            false,
-            true
-        );
-    } catch (Exception $e) {
-        error_log('Remember me token error: ' . $e->getMessage());
-    }
-} else {
-    setcookie('remember_token', '', time() - 3600, '/');
-}
 
 // Redirect based on role
 $redirect = $_SESSION['redirect_after_login'] ?? null;

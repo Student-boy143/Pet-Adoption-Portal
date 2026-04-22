@@ -7,7 +7,7 @@ unset($_SESSION['success']);
 
 $loggedIn    = isset($_SESSION['user_id']);
 $firstname   = htmlspecialchars($_SESSION['firstname'] ?? '');
-$accountType = $_SESSION['account_type'] ?? 'adopt';
+$role = $_SESSION['role'] ?? '';
 ?>
 <!doctype html>
 <html lang="en">
@@ -77,12 +77,22 @@ $accountType = $_SESSION['account_type'] ?? 'adopt';
           <a href="adopt.php"  class="nav-link">Adopt</a>
           <a href="about.php"  class="nav-link">About</a>
           <?php if ($loggedIn): ?>
-            <span class="user-greeting">Hi, <?= $firstname ?>! 👋</span>
-            <?php if ($accountType === 'rescue'): ?>
-              <a href="add-pet.php" class="btn btn-ghost">+ List a Pet</a>
-            <?php endif; ?>
-            <a href="actions/logout.php" class="btn btn-ghost">Logout</a>
-          <?php else: ?>
+
+          <!-- SHOW ONLY FOR BUYER -->
+          <?php if ($role === 'buyer'): ?>
+            <a href="buyer/my-requests.php" class="nav-link">My Requests</a>
+          <?php endif; ?>
+
+          <span class="user-greeting">Hi, <?= $firstname ?>! 👋</span>
+
+          <!-- SHOW ONLY FOR SELLER -->
+          <?php if ($role === 'seller'): ?>
+            <a href="seller/add-pet.php" class="btn btn-ghost">+ List a Pet</a>
+          <?php endif; ?>
+
+          <a href="actions/logout.php" class="btn btn-ghost">Logout</a>
+
+        <?php else: ?>
             <a href="login.php"    class="btn btn-ghost">Sign in</a>
             <a href="register.php" class="btn btn-primary">Register</a>
           <?php endif; ?>
