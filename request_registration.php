@@ -1,7 +1,6 @@
 <?php
 // request_registration.php
-// Expt 5 — Processes registration using $_REQUEST method
-// 
+
 // $_REQUEST merges $_GET, $_POST and $_COOKIE.
 // Works regardless of whether form uses GET or POST.
 
@@ -90,7 +89,7 @@ if ($submitted) {
 
   <?php if ($submitted && empty($errors)): ?>
     <div class="alert-success">
-      ✅ Data received via $_REQUEST (form used <strong><?= $method ?></strong> method).
+       Data received via $_REQUEST (form used <strong><?= $method ?></strong> method).
     </div>
     <div class="result-box">
       <h2>Submitted Data ($_REQUEST)</h2>
@@ -111,7 +110,7 @@ if ($submitted) {
     </div>
   <?php endif; ?>
 
-  <!-- Comparison table -->
+   <!-- Comparison table -->
   <div class="result-box">
     <h2>$_POST vs $_GET vs $_REQUEST</h2>
     <table class="comparison-table">

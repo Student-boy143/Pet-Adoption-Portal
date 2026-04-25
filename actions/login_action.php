@@ -1,13 +1,9 @@
 <?php
 // actions/login_action.php
-// Sessions only 
 
 session_start();
 require_once '../includes/db.php';
 
-// Debug (remove later)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 // Allow only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -32,7 +28,9 @@ $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND is_active = TRUE 
 $stmt->execute([$email]);
 $user = $stmt->fetch();
 
-// FIXED PASSWORD CHECK
+// See 2 cases h
+// 1)user not found
+// 2)Pass mismatch
 if (!$user || $password !== $user['password']) {
     $_SESSION['errors'] = ['Incorrect email or password.'];
     $_SESSION['old']    = ['email' => $email];
@@ -40,7 +38,8 @@ if (!$user || $password !== $user['password']) {
     exit;
 }
 
-// Regenerate session (security)
+// Regenerate session for security
+// new session id
 session_regenerate_id(true);
 
 // Store session data

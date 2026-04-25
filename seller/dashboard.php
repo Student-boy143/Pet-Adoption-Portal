@@ -73,7 +73,7 @@ $error = $_SESSION['errors'][0] ?? ''; unset($_SESSION['errors']);
     <h3>Seller Panel</h3>
     <a href="#my-pets" class="dash-link active">🐾 My Listings</a>
     <a href="#requests" class="dash-link">📬 Requests</a>
-    <a href="add-pet.php" class="dash-link">➕ Add New Pet</a>
+    <a href="add-pet.php" class="dash-link"> Add New Pet</a>
   </div>
 
   <div class="dash-main">
@@ -113,10 +113,10 @@ $error = $_SESSION['errors'][0] ?? ''; unset($_SESSION['errors']);
               <td><?= htmlspecialchars($pet['city']) ?></td>
               <td><span class="status-badge status-<?= $pet['status'] ?>"><?= ucfirst($pet['status']) ?></span></td>
               <td>
-                <a href="edit-pet.php?id=<?= $pet['id'] ?>" class="btn btn-ghost btn-sm">✏️ Edit</a>
+                <a href="edit-pet.php?id=<?= $pet['id'] ?>" class="btn btn-ghost btn-sm">Edit</a>
                 <form method="POST" action="delete-pet.php" style="display:inline">
                   <input type="hidden" name="pet_id" value="<?= $pet['id'] ?>"/>
-                  <button class="btn btn-danger btn-sm">🗑 Delete</button>
+                  <button class="btn btn-danger btn-sm"> Delete</button>
                 </form>
               </td>
             </tr>

@@ -107,7 +107,7 @@ function sel(string $val, string $current): string {
           <a href="adopt.php"  class="nav-link active">Adopt</a>
           <a href="about.php"  class="nav-link">About</a>
           <?php if ($loggedIn): ?>
-            <span style="font-size:.9rem;font-weight:700;color:var(--brown);padding:8px 14px;">Hi, <?= $firstname ?>! 👋</span>
+            <span style="font-size:.9rem;font-weight:700;color:var(--brown);padding:8px 14px;">Hi, <?= $firstname ?>! </span>
             <a href="actions/logout.php" class="btn btn-ghost">Logout</a>
           <?php else: ?>
             <a href="login.php"    class="btn btn-ghost">Sign in</a>

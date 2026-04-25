@@ -1,13 +1,13 @@
 <?php
 // includes/db.php — PostgreSQL connection
 
-// Edit only these four values:
 define('DB_HOST', 'localhost');
 define('DB_PORT', '5432');
 define('DB_NAME', 'fureverhome');
 define('DB_USER', 'postgres');  
 define('DB_PASS', '');  
 
+//handles connection errors
 try {
     $dsn = sprintf(
         'pgsql:host=%s;port=%s;dbname=%s',

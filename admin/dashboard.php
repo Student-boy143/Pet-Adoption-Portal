@@ -4,7 +4,7 @@ require_once '../includes/auth_check.php';
 requireRole('admin');
 require_once '../includes/db.php';
 
-//  Stats 
+//  Stats basically fetching data from db
 $totalUsers   = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role != 'admin'")->fetchColumn();
 $totalBuyers  = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role='buyer'")->fetchColumn();
 $totalSellers = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role='seller'")->fetchColumn();
@@ -14,7 +14,7 @@ $adoptedPets  = (int)$pdo->query("SELECT COUNT(*) FROM pets WHERE status='adopte
 $totalReqs    = (int)$pdo->query("SELECT COUNT(*) FROM adoption_requests")->fetchColumn();
 $pendingReqs  = (int)$pdo->query("SELECT COUNT(*) FROM adoption_requests WHERE status='pending'")->fetchColumn();
 
-//  All Users 
+//  All Users new user at top
 $users = $pdo->query(
     "SELECT * FROM users WHERE role != 'admin' ORDER BY created_at DESC"
 )->fetchAll();
@@ -113,9 +113,8 @@ $tab = $_GET['tab'] ?? 'overview';
               <td>
                 <form method="POST" action="toggle-user.php" style="display:inline">
                   <input type="hidden" name="user_id" value="<?= $u['id'] ?>"/>
-                  <input type="hidden" name="is_active" value="<?= $u['is_active']?'0':'1' ?>"/>
                   <button class="btn btn-sm <?= $u['is_active']?'btn-danger':'btn-success' ?>">
-                    <?= $u['is_active']?'Suspend':'Activate' ?>
+                    <?= ($u['is_active'] == true || $u['is_active'] == 't') ? 'Suspend' : 'Activate' ?>
                   </button>
                 </form>
                 <form method="POST" action="delete-user.php" style="display:inline"
@@ -130,7 +129,7 @@ $tab = $_GET['tab'] ?? 'overview';
         </table>
       </div>
 
-      <!-- ── PETS  -->
+    <!-- // PETS   -->
       <?php elseif ($tab === 'pets'): ?>
       <div class="section-bar">
         <h2>All Pet Listings</h2>

@@ -1,22 +1,19 @@
 <?php
 // get_registration.php
-// Expt 5 — Processes registration form using $_GET method
-// Place at: fureverhome/get_registration.php
-// ─────────────────────────────────────────────────────────
 
 $data   = [];
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['firstname'])) {
 
-    // ── Collect via $_GET ─────────────────────
+     Collect via $_GET
     $firstname = htmlspecialchars(trim($_GET['firstname'] ?? ''));
     $lastname  = htmlspecialchars(trim($_GET['lastname']  ?? ''));
     $email     = htmlspecialchars(trim($_GET['email']     ?? ''));
     $password  = $_GET['password'] ?? '';
     $role      = htmlspecialchars(trim($_GET['role']      ?? 'buyer'));
 
-    // ── Server-side validation ────────────────
+    // Server-side validation 
     if (strlen($firstname) < 2)
         $errors[] = 'First name must be at least 2 characters.';
     if (!preg_match("/^[a-zA-Z\s'\-]+$/", $firstname))
@@ -97,7 +94,7 @@ $submitted = isset($_GET['firstname']);
         <ul><?php foreach($errors as $e): ?><li><?= $e ?></li><?php endforeach; ?></ul>
       </div>
     <?php else: ?>
-      <div class="alert-success">✅ Form submitted via $_GET. Data received below.</div>
+      <div class="alert-success"> Form submitted via $_GET. Data received below.</div>
       <div class="result-box">
         <h2>Submitted Registration Data ($_GET)</h2>
         <table>

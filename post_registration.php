@@ -1,7 +1,5 @@
 <?php
 // post_registration.php
-// Expt 5 — Processes registration form using $_POST method
-// 
 session_start();
 
 $data   = [];
@@ -70,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="page-wrap">
   <a href="index.php" class="back-link">← Back to Home</a>
   <br/><br/>
-  <h1>Expt 5 — $_POST Method</h1>
   <div class="badge">METHOD: $_POST</div>
 
   <div class="method-note">
@@ -86,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <ul><?php foreach($errors as $e): ?><li><?= $e ?></li><?php endforeach; ?></ul>
       </div>
     <?php else: ?>
-      <div class="alert-success">✅ Form submitted successfully via $_POST. Data received and sanitized below.</div>
+      <div class="alert-success">Form submitted successfully via $_POST. Data received and sanitized below.</div>
       <div class="result-box">
         <h2>Submitted Registration Data ($_POST)</h2>
         <table>

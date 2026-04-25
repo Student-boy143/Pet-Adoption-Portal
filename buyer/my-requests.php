@@ -7,7 +7,7 @@ require_once '../includes/db.php';
 
 $buyerId = $_SESSION['user_id'];
 
-// ✅ FIXED QUERY
+// FIXED QUERY
 $stmt = $pdo->prepare(
     'SELECT ar.*, p.name AS pet_name, p.image, p.type, p.breed, p.city,
             u.name AS seller_name, u.email AS seller_email
@@ -45,7 +45,7 @@ unset($_SESSION['success']);
       <a href="../index.php"  class="nav-link">Home</a>
       <a href="../adopt.php"  class="nav-link">Adopt</a>
       <span style="font-size:.9rem;font-weight:700;color:var(--brown);padding:8px 14px;">
-        Hi, <?= userName() ?>! 👋
+        Hi, <?= userName() ?>! 
       </span>
       <a href="../actions/logout.php" class="btn btn-ghost">Logout</a>
     </nav>
@@ -102,7 +102,10 @@ unset($_SESSION['success']);
 
                 <!-- Pet -->
                 <td>
-                  <img src="../<?= htmlspecialchars($r['image']) ?>" class="table-thumb" alt="">
+                    <img src="<?= str_starts_with($r['image'], 'http') 
+                      ? $r['image'] 
+                      : '../' . $r['image'] ?>" 
+                      class="table-thumb" alt="">
                   <strong><?= htmlspecialchars($r['pet_name']) ?></strong>
                 </td>
 

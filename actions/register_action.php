@@ -46,7 +46,7 @@ if (!empty($errors)) {
     exit;
 }
 
-//  Combine name (IMPORTANT FIX)
+//  Combine name 
 $name = $firstname . ' ' . $lastname;
 
 $hashed = $password;
